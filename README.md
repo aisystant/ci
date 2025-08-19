@@ -34,17 +34,23 @@ jobs:
       nomad_job_file: 'nomad-job.hcl'
     secrets:
       NOMAD_SSH_PRIVATE_KEY: ${{ secrets.NOMAD_SSH_PRIVATE_KEY }}
-      NOMAD_HOST: ${{ secrets.NOMAD_HOST }}
-      NOMAD_USER: ${{ secrets.NOMAD_USER }}
+    vars:
+      NOMAD_HOST: ${{ vars.NOMAD_HOST }}
+      NOMAD_USER: ${{ vars.NOMAD_USER }}
 ```
 
 ## Setup Requirements
 
-### 1. Repository Secrets
+### 1. Repository Configuration
 Add in your application repository settings → Secrets and variables → Actions:
 
+**Secrets:**
 ```
 NOMAD_SSH_PRIVATE_KEY    # SSH private key for Nomad cluster access
+```
+
+**Variables:**
+```
 NOMAD_HOST              # Nomad cluster hostname/IP  
 NOMAD_USER              # SSH username for Nomad cluster
 ```
@@ -120,6 +126,8 @@ Ensure you have a `Dockerfile` in your repository root.
 
 **Required Secrets:**
 - `NOMAD_SSH_PRIVATE_KEY`: SSH private key
+
+**Required Variables:**
 - `NOMAD_HOST`: Nomad cluster host
 - `NOMAD_USER`: SSH username
 
@@ -132,8 +140,9 @@ jobs:
     uses: aisystant/ci/.github/workflows/nomad.yml@main
     secrets:
       NOMAD_SSH_PRIVATE_KEY: ${{ secrets.NOMAD_SSH_PRIVATE_KEY }}
-      NOMAD_HOST: ${{ secrets.NOMAD_HOST }}
-      NOMAD_USER: ${{ secrets.NOMAD_USER }}
+    vars:
+      NOMAD_HOST: ${{ vars.NOMAD_HOST }}
+      NOMAD_USER: ${{ vars.NOMAD_USER }}
 ```
 
 ### Custom Configuration
@@ -154,8 +163,9 @@ jobs:
       nomad_job_file: 'deployment/staging.hcl'
     secrets:
       NOMAD_SSH_PRIVATE_KEY: ${{ secrets.NOMAD_SSH_PRIVATE_KEY }}
-      NOMAD_HOST: ${{ secrets.NOMAD_HOST }}
-      NOMAD_USER: ${{ secrets.NOMAD_USER }}
+    vars:
+      NOMAD_HOST: ${{ vars.NOMAD_HOST }}
+      NOMAD_USER: ${{ vars.NOMAD_USER }}
 ```
 
 ### Manual Deploy Workflow
@@ -188,8 +198,9 @@ jobs:
       environment: ${{ inputs.environment }}
     secrets:
       NOMAD_SSH_PRIVATE_KEY: ${{ secrets.NOMAD_SSH_PRIVATE_KEY }}
-      NOMAD_HOST: ${{ secrets.NOMAD_HOST }}
-      NOMAD_USER: ${{ secrets.NOMAD_USER }}
+    vars:
+      NOMAD_HOST: ${{ vars.NOMAD_HOST }}
+      NOMAD_USER: ${{ vars.NOMAD_USER }}
 ```
 
 ## How It Works

@@ -21,16 +21,12 @@ on:
     secrets:
       NOMAD_SSH_PRIVATE_KEY:
         required: true
-      NOMAD_HOST:
-        required: true
-      NOMAD_USER:
-        required: true
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  NOMAD_HOST: ${{ secrets.NOMAD_HOST }}
-  NOMAD_USER: ${{ secrets.NOMAD_USER }}
+  NOMAD_HOST: ${{ vars.NOMAD_HOST }}
+  NOMAD_USER: ${{ vars.NOMAD_USER }}
 
 jobs:
   deploy:
