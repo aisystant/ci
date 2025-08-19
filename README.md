@@ -29,7 +29,7 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     uses: aisystant/ci/.github/workflows/nomad.yml@main
     with:
-      image_tag: 'sha-${{ github.sha }}'
+      image_tag: ''  # Uses sha-{short-commit} by default
       environment: 'production'
       nomad_job_file: 'nomad-job.hcl'
       nomad_host: ${{ vars.NOMAD_HOST }}
@@ -119,7 +119,7 @@ Ensure you have a `Dockerfile` in your repository root.
 ### Nomad Deploy Workflow  
 
 **Inputs:**
-- `image_tag` (optional): Docker image tag, default: 'sha-${{ github.sha }}'
+- `image_tag` (optional): Docker image tag, default: 'sha-{7-char-commit-hash}'
 - `environment` (optional): Target environment, default: 'production'
 - `nomad_job_file` (optional): Path to Nomad job file, default: 'nomad-job.hcl'
 
@@ -157,7 +157,7 @@ jobs:
     needs: build
     uses: aisystant/ci/.github/workflows/nomad.yml@main
     with:
-      image_tag: 'sha-${{ github.sha }}'
+      image_tag: ''  # Uses sha-{short-commit} by default
       environment: 'staging'
       nomad_job_file: 'deployment/staging.hcl'
     secrets:

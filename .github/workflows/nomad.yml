@@ -6,7 +6,7 @@ on:
       image_tag:
         description: 'Docker image tag to deploy'
         required: false
-        default: 'sha-${{ github.sha }}'
+        default: ''
         type: string
       environment:
         description: 'Target environment'
@@ -53,9 +53,10 @@ jobs:
       id: image
       run: |
         IMAGE_TAG="${{ inputs.image_tag }}"
-        # If using default sha format, truncate to 7 characters
-        if [[ "$IMAGE_TAG" == sha-* && ${#IMAGE_TAG} -gt 11 ]]; then
-          IMAGE_TAG="sha-${IMAGE_TAG:4:7}"
+        # If no tag provided, use short SHA format
+        if [[ -z "$IMAGE_TAG" ]]; then
+          GITHUB_SHA="${{ github.sha }}"
+          IMAGE_TAG="sha-${GITHUB_SHA:0:7}"
         fi
         FULL_IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${IMAGE_TAG}"
         echo "tag=${IMAGE_TAG}" >> $GITHUB_OUTPUT
