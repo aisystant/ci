@@ -18,14 +18,6 @@ on:
         required: false
         default: 'nomad-job.hcl'
         type: string
-      nomad_host:
-        description: 'Nomad cluster hostname/IP'
-        required: true
-        type: string
-      nomad_user:
-        description: 'SSH username for Nomad cluster'
-        required: true
-        type: string
     secrets:
       NOMAD_SSH_PRIVATE_KEY:
         required: true
@@ -33,8 +25,8 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  NOMAD_HOST: ${{ inputs.nomad_host }}
-  NOMAD_USER: ${{ inputs.nomad_user }}
+  NOMAD_HOST: ${{ vars.NOMAD_HOST }}
+  NOMAD_USER: ${{ vars.NOMAD_USER }}
 
 jobs:
   deploy:

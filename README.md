@@ -32,8 +32,6 @@ jobs:
       image_tag: ''  # Uses sha-{short-commit} by default
       environment: 'production'
       nomad_job_file: 'nomad-job.hcl'
-      nomad_host: ${{ vars.NOMAD_HOST }}
-      nomad_user: ${{ vars.NOMAD_USER }}
     secrets:
       NOMAD_SSH_PRIVATE_KEY: ${{ secrets.NOMAD_SSH_PRIVATE_KEY }}
 ```
