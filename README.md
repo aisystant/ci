@@ -32,11 +32,10 @@ jobs:
       image_tag: 'sha-${{ github.sha }}'
       environment: 'production'
       nomad_job_file: 'nomad-job.hcl'
+      nomad_host: ${{ vars.NOMAD_HOST }}
+      nomad_user: ${{ vars.NOMAD_USER }}
     secrets:
       NOMAD_SSH_PRIVATE_KEY: ${{ secrets.NOMAD_SSH_PRIVATE_KEY }}
-    vars:
-      NOMAD_HOST: ${{ vars.NOMAD_HOST }}
-      NOMAD_USER: ${{ vars.NOMAD_USER }}
 ```
 
 ## Setup Requirements
