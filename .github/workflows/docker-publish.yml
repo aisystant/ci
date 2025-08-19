@@ -79,7 +79,17 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
+    - name: Extract SHA tag
+      id: sha_tag
+      run: |
+        # Extract the sha- tag from metadata outputs
+        TAGS="${{ steps.meta.outputs.tags }}"
+        SHA_TAG=$(echo "$TAGS" | grep -E 'sha-[a-f0-9]{7}' | head -1 | sed 's/.*://')
+        echo "sha_tag=$SHA_TAG" >> $GITHUB_OUTPUT
+        echo "Extracted SHA tag: $SHA_TAG"
+
     outputs:
       image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       tags: ${{ steps.meta.outputs.tags }}
       digest: ${{ steps.build.outputs.digest }}
+      sha_tag: ${{ steps.sha_tag.outputs.sha_tag }}
