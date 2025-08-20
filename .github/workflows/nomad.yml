@@ -87,12 +87,12 @@ jobs:
         ssh -i ~/.ssh/nomad_key -o StrictHostKeyChecking=no ${{ env.NOMAD_USER }}@${{ env.NOMAD_HOST }} "nomad job validate /tmp/${JOB_NAME}-job.hcl"
 
     - name: Pre-flight image check
-      timeout-minutes: 1
+      timeout-minutes: 5
       run: |
         echo "Verifying Docker image accessibility from Nomad cluster..."
         
-        # Test if the image can be pulled on the Nomad cluster (30 second timeout for tiny image)
-        IMAGE_CHECK=$(ssh -i ~/.ssh/nomad_key -o StrictHostKeyChecking=no ${{ env.NOMAD_USER }}@${{ env.NOMAD_HOST }} "timeout 30s docker pull ${{ steps.image.outputs.full_image }} && echo 'SUCCESS' || echo 'FAILED'")
+        # Test if the image can be pulled on the Nomad cluster (300 second timeout for tiny image)
+        IMAGE_CHECK=$(ssh -i ~/.ssh/nomad_key -o StrictHostKeyChecking=no ${{ env.NOMAD_USER }}@${{ env.NOMAD_HOST }} "timeout 300s docker pull ${{ steps.image.outputs.full_image }} && echo 'SUCCESS' || echo 'FAILED'")
         
         if echo "$IMAGE_CHECK" | grep -q "SUCCESS"; then
           echo "✅ Image is accessible from Nomad cluster"
@@ -134,12 +134,12 @@ jobs:
         fi
 
     - name: Deploy to Nomad
-      timeout-minutes: 3
+      timeout-minutes: 5
       run: |
         echo "Deploying to Nomad..."
         
         # Simple deployment with standard nomad job run
-        if timeout 90s ssh -i ~/.ssh/nomad_key -o StrictHostKeyChecking=no ${{ env.NOMAD_USER }}@${{ env.NOMAD_HOST }} "nomad job run /tmp/${JOB_NAME}-job.hcl"; then
+        if timeout 300s ssh -i ~/.ssh/nomad_key -o StrictHostKeyChecking=no ${{ env.NOMAD_USER }}@${{ env.NOMAD_HOST }} "nomad job run /tmp/${JOB_NAME}-job.hcl"; then
           echo "✅ Deployment completed successfully"
         else
           echo "❌ Deployment command failed or timed out after 90 seconds"
